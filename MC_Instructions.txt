@@ -1,0 +1,58 @@
+Note: Instrukce jsou taky ulozeny v Pracovni/Chi_c
+
+mkdir ChicMC
+cd ChicMC
+export SCRAM_ARCH=slc7_amd64_gcc530
+cmsrel CMSSW_8_0_30   
+cd CMSSW_8_0_30/src
+cmsenv
+
+gen step
+
+git cms-addpkg Configuration/Generator/
+cp /afs/cern.ch/work/o/okukral/ChicMC/CMSSW_8_0_30/src/Configuration/Generator/python/HIDilepton_ChiCJpsiMuMu_Pythia8_8p16TeV_TuneCP5_evtgen_cfi.py Configuration/Generator/python/
+cp /afs/cern.ch/work/o/okukral/ChicMC/CMSSW_8_0_30/src/Configuration/Generator/python/MCTunes2017/PythiaCP5Settings_cfi.py Configuration/Generator/python/MCTunes2017/
+// see http://home.thep.lu.se/Pythia/pythia82html/OniaProcesses.html for explanation,
+http://pdg.lbl.gov/2004/reviews/montecarlorpp.pdf for the codes
+// compile
+scram b
+
+
+
+//now use cmsDriver to create ChiCJpsiMuMu_Pythia8_8p16TeV_TuneCUETP8M1_GEN.py 
+
+by default setup to Pbp
+cmsDriver.py HIDilepton_ChiCJpsiMuMu_Pythia8_8p16TeV_TuneCUETP8M1_cfi.py --python_filename ChiCJpsiMuMu_Pythia8_8p16TeV_TuneCUETP8M1_GEN.py --mc --eventcontent RAWSIM --customise Configuration/StandardSequences/SimWithCastor_cff.py --datatier GEN-SIM --conditions 80X_mcRun2_pA_v4 --beamspot RealisticPbPBoost8TeV2016Collision --step GEN,SIM --scenario HeavyIons --era Run2_2016_pA --number=100 --fileout=ChiCJpsiMuMu_Pythia8_8p16TeV_TuneCUETP8M1_GEN.root >& ChiCJpsiMuMu_Pythia8_8p16TeV_TuneCUETP8M1_GEN.log
+//Old: cmsDriver.py HIDilepton_ChiCJpsiMuMu_Pythia8_8p16TeV_TuneCP5_evtgen_cfi.py --python_filename ChiCJpsiMuMu_Pythia8_8p16TeV_TuneCP5_GEN.py --mc --eventcontent RAWSIM --customise Configuration/StandardSequences/SimWithCastor_cff.py --datatier GEN-SIM --conditions 80X_mcRun2_pA_v4 --beamspot RealisticPbPBoost8TeV2016Collision --step GEN,SIM --scenario HeavyIons --era Run2_2016_pA --number=100 --fileout=ChiCJpsiMuMu_Pythia8_8p16TeV_TuneCP5_GEN.root >& ChiCJpsiMuMu_Pythia8_8p16TeV_TuneCP5_GEN.log
+//you can run the config directly via cmsRun or use (modified) crab file from /eos/cms/store/group/phys_heavyions/okukral/Jpsi_MC_Maine/ChicMC/crabConfig_MC_Pbp.py
+
+
+embedded step
+
+pPb Direction: 
+
+cmsDriver.py GENFRAGMENT_cfi.py --python_filename cfgFileName --mc --pileup HiMixGEN --pileup_input das:/ReggeGribovPartonMC_EposLHC_pPb_4080_4080_DataBS/pPb816Spring16GS-MB_80X_mcRun2_pA_v4-v2/GEN-SIM --pileup_dasoption "--limit 0" --eventcontent RAWSIM --customise Configuration/StandardSequences/SimWithCastor_cff.py --datatier GEN-SIM --conditions 80X_mcRun2_pA_v4 --beamspot MatchPPbBoost --step GEN,SIM --scenario HeavyIons --era Run2_2016_pA --number=nEvt --fileout=outputFileName >& logFileName
+cmsDriver.py HIDilepton_ChiCJpsiMuMu_Pythia8_8p16TeV_TuneCP5_evtgen_cfi.py --python_filename ChiCJpsiMuMu_Pythia8_8p16TeV_TuneCP5_emb_GEN.py --mc --pileup HiMixGEN --pileup_input das:/ReggeGribovPartonMC_EposLHC_pPb_4080_4080_DataBS/pPb816Spring16GS-MB_80X_mcRun2_pA_v4-v2/GEN-SIM --pileup_dasoption "--limit 0" --eventcontent RAWSIM --customise Configuration/StandardSequences/SimWithCastor_cff.py --datatier GEN-SIM --conditions 80X_mcRun2_pA_v4 --beamspot MatchPPbBoost --step GEN,SIM --scenario HeavyIons --era Run2_2016_pA --number=100 --fileout=ChiCJpsiMuMu_Pythia8_8p16TeV_TuneCP5_emb_GEN.root >& ChiCJpsiMuMu_Pythia8_8p16TeV_TuneCP5_emb_GEN.log
+
+Pbp Direction (reverse): cmsDriver.py GENFRAGMENT_cfi.py --python_filename cfgFileName --mc --pileup HiMixGEN --pileup_input das:/ReggeGribovPartonMC_EposLHC_PbP_4080_4080_DataBS/pPb816Spring16GS-MB_80X_mcRun2_pA_v4-v2/GEN-SIM --pileup_dasoption "--limit 0"  --eventcontent RAWSIM --customise Configuration/StandardSequences/SimWithCastor_cff.py --datatier GEN-SIM --conditions 80X_mcRun2_pA_v4 --beamspot MatchPbPBoost --step GEN,SIM --scenario HeavyIons --era Run2_2016_pA --number=nEvt --fileout=outputFileName >& logFileName
+
+
+
+digi step
+
+cmsDriver.py --python_filename cfgFileName --filein=file:prevRootFileName  --fileout=rootFileName --mc --eventcontent RAWSIM --datatier GEN-SIM-RAW --conditions 80X_mcRun2_pA_v4 --step DIGI,L1,DIGI2RAW,HLT:PIon --era Run2_2016_pA  --customise Configuration/DataProcessing/Utils.addMonitoring --number=nEvt >& logFileName
+
+e.g. cmsDriver.py --python_filename ChiCJpsiMuMu_Pythia8_8p16TeV_TuneCUETP8M1_DIGI.py --filein=file:/afs/cern.ch/user/o/okukral/Work/ChicMC/CMSSW_8_0_30/src/ChiCJpsiMuMu_Pythia8_8p16TeV_TuneCUETP8M1_GEN.root --fileout=ChiCJpsiMuMu_Pythia8_8p16TeV_TuneCUETP8M1_DIGI.root --mc --eventcontent RAWSIM --datatier GEN-SIM-RAW --conditions 80X_mcRun2_pA_v4 --step DIGI,L1,DIGI2RAW,HLT:PIon --era Run2_2016_pA  --customise Configuration/DataProcessing/Utils.addMonitoring --number=-1 >& ChiCJpsiMuMu_Pythia8_8p16TeV_TuneCUETP8M1_DIGI.log
+
+
+Reco step
+
+cmsDriver.py --python_filename cfgFileName --filein=file:prevRootFileName  --fileout=$rootFileName --mc --eventcontent AODSIM --datatier GEN-SIM-RECO --conditions 80X_mcRun2_pA_v4 --step RAW2DIGI,L1Reco,RECO --era Run2_2016_pA  --customise_commands "process.bunchSpacingProducer.bunchSpacingOverride=cms.uint32(25)\nprocess.bunchSpacingProducer.overrideBunchSpacing=cms.bool(True)" --number=nEvt >& logFileName
+
+e.g. cmsDriver.py --python_filename ChiCJpsiMuMu_Pythia8_8p16TeV_TuneCUETP8M1_RECO.py --filein=file:/afs/cern.ch/user/o/okukral/Work/ChicMC/CMSSW_8_0_30/src/ChiCJpsiMuMu_Pythia8_8p16TeV_TuneCUETP8M1_DIGI.root  --fileout=ChiCJpsiMuMu_Pythia8_8p16TeV_TuneCUETP8M1_RECO.root --mc --eventcontent AODSIM --datatier GEN-SIM-RECO --conditions 80X_mcRun2_pA_v4 --step RAW2DIGI,L1Reco,RECO --era Run2_2016_pA  --customise_commands "process.bunchSpacingProducer.bunchSpacingOverride=cms.uint32(25)\nprocess.bunchSpacingProducer.overrideBunchSpacing=cms.bool(True)" --number=-1 >& ChiCJpsiMuMu_Pythia8_8p16TeV_TuneCUETP8M1_RECO.log
+
+
+
+
+
+
