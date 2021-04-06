@@ -36,7 +36,7 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
                'Charmonium:gg2ccbar(3PJ)[3S1(8)]g = on,on,on',
                'Charmonium:qg2ccbar(3PJ)[3S1(8)]q = on,on,on',
                'Charmonium:qqbar2ccbar(3PJ)[3S1(8)]g = on,on,on',
-               'PhaseSpace:pTHatMin = 2.'                   # be aware of this ckin(3) equivalent
+               'PhaseSpace:pTHatMin = 4.5'                   # be aware of this ckin(3) equivalent
                ),
            parameterSets = cms.vstring('pythia8CommonSettings',
                                        'pythia8CUEP8M1Settings',
@@ -57,7 +57,7 @@ generator.PythiaParameters.processParameters.extend(EvtGenExtraParticles)
 
 oniafilter = cms.EDFilter("MCParticlePairFilter",
     Status = cms.untracked.vint32(2, 1),
-    MinPt = cms.untracked.vdouble(0.0, 0.2),
+    MinPt = cms.untracked.vdouble(5.7, 0.2),
     MaxEta = cms.untracked.vdouble(10.0, 2.5),
     MinEta = cms.untracked.vdouble(-10.0, -2.5),
     ParticleCharge = cms.untracked.int32(0),
@@ -69,8 +69,8 @@ oniafilter = cms.EDFilter("MCParticlePairFilter",
 
 mumugenfilter = cms.EDFilter("MCParticlePairFilter",
     Status = cms.untracked.vint32(1, 1),
-    MinPt = cms.untracked.vdouble(0.7, 0.7),
-    MinP = cms.untracked.vdouble(2.5, 2.5),
+    MinPt = cms.untracked.vdouble(1.2, 1.2),
+    MinP = cms.untracked.vdouble(3.3, 3.3),
     MaxEta = cms.untracked.vdouble(2.5, 2.5),
     MinEta = cms.untracked.vdouble(-2.5, -2.5),
     ParticleCharge = cms.untracked.int32(-1),
