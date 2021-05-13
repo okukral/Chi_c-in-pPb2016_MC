@@ -15,10 +15,9 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
                decay_table = cms.string('GeneratorInterface/EvtGenInterface/data/DECAY_2010.DEC'),
                particle_property_file = cms.FileInPath('GeneratorInterface/EvtGenInterface/data/evt.pdl'),
                user_decay_file        = cms.vstring('GeneratorInterface/ExternalDecays/data/Onia_chic_jpsigamma.dec'),
-               list_forced_decays     = cms.vstring('Mychi_c0',
-                                                 'Mychi_c1',
+               list_forced_decays     = cms.vstring('Mychi_c1',
                                                  'Mychi_c2'),
-               operates_on_particles = cms.vint32(10441,20443,445)
+               operates_on_particles = cms.vint32(20443,445)
             ),
             parameterSets = cms.vstring('EvtGen130')
         ),
@@ -27,15 +26,15 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
            pythia8CommonSettingsBlock,
            pythia8CUEP8M1SettingsBlock,
            processParameters = cms.vstring(
-               'Charmonium:states(3PJ) = 10441,20443,445', # filter on all Chi C states
-               'Charmonium:O(3PJ)[3P0(1)] = 0.05,0.05,0.05',
-               'Charmonium:O(3PJ)[3S1(8)] = 0.0031,0.0031,0.0031',
-               'Charmonium:gg2ccbar(3PJ)[3PJ(1)]g = on,on,on',
-               'Charmonium:qg2ccbar(3PJ)[3PJ(1)]q = on,on,on',
-               'Charmonium:qqbar2ccbar(3PJ)[3PJ(1)]g = on,on,on',
-               'Charmonium:gg2ccbar(3PJ)[3S1(8)]g = on,on,on',
-               'Charmonium:qg2ccbar(3PJ)[3S1(8)]q = on,on,on',
-               'Charmonium:qqbar2ccbar(3PJ)[3S1(8)]g = on,on,on',
+               'Charmonium:states(3PJ) = 20443,445', # filter on all Chi C states
+               'Charmonium:O(3PJ)[3P0(1)] = 0.05,0.05',
+               'Charmonium:O(3PJ)[3S1(8)] = 0.0031,0.0031',
+               'Charmonium:gg2ccbar(3PJ)[3PJ(1)]g = on,on',
+               'Charmonium:qg2ccbar(3PJ)[3PJ(1)]q = on,on',
+               'Charmonium:qqbar2ccbar(3PJ)[3PJ(1)]g = on,on',
+               'Charmonium:gg2ccbar(3PJ)[3S1(8)]g = on,on',
+               'Charmonium:qg2ccbar(3PJ)[3S1(8)]q = on,on',
+               'Charmonium:qqbar2ccbar(3PJ)[3S1(8)]g = on,on',
                'PhaseSpace:pTHatMin = 4.5'                   # be aware of this ckin(3) equivalent
                ),
            parameterSets = cms.vstring('pythia8CommonSettings',
@@ -47,13 +46,6 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
 
 generator.PythiaParameters.processParameters.extend(EvtGenExtraParticles)
 
-#oniafilter = cms.EDFilter("PythiaFilter",
-#    Status = cms.untracked.int32(2),
-#    MaxEta = cms.untracked.double(10.0),
-#    MinEta = cms.untracked.double(-10.0),
-#    MinPt = cms.untracked.double(0.0),
-#    ParticleID = cms.untracked.int32(443)
-#)
 
 oniafilter = cms.EDFilter("MCParticlePairFilter",
     Status = cms.untracked.vint32(2, 1),
