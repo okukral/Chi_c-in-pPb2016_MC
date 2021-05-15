@@ -5,15 +5,16 @@ from GeneratorInterface.EvtGenInterface.EvtGenSetting_cff import *
 
 generator = cms.EDFilter("Pythia8GeneratorFilter",
         pythiaPylistVerbosity = cms.untracked.int32(0),
-        filterEfficiency = cms.untracked.double(0.11),
+        filterEfficiency = cms.untracked.double(0.13),
         pythiaHepMCVerbosity = cms.untracked.bool(False),
         crossSection = cms.untracked.double(0),
         comEnergy = cms.double(8160.0),
         maxEventsToPrint = cms.untracked.int32(0),                         
         ExternalDecays = cms.PSet(
             EvtGen130 = cms.untracked.PSet(
-               decay_table = cms.string('GeneratorInterface/EvtGenInterface/data/DECAY_2010.DEC'),
-               particle_property_file = cms.FileInPath('GeneratorInterface/EvtGenInterface/data/evt.pdl'),
+               decay_table = cms.string('GeneratorInterface/EvtGenInterface/data/DECAY_2014_NOLONGLIFE.DEC'),
+               particle_property_file = cms.FileInPath('GeneratorInterface/EvtGenInterface/data/evt_2014.pdl'),
+               convertPythiaCodes = cms.untracked.bool(False),
                user_decay_file        = cms.vstring('GeneratorInterface/ExternalDecays/data/Onia_chic_jpsigamma.dec'),
                list_forced_decays     = cms.vstring('Mychi_c1',
                                                  'Mychi_c2'),
