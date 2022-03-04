@@ -48,15 +48,13 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
 generator.PythiaParameters.processParameters.extend(EvtGenExtraParticles)
 
 
-oniafilter = cms.EDFilter("MCParticlePairFilter",
-    Status = cms.untracked.vint32(2, 1),
-    MinPt = cms.untracked.vdouble(5.7, 0.2),
-    MaxEta = cms.untracked.vdouble(10.0, 2.5),
-    MinEta = cms.untracked.vdouble(-10.0, -2.5),
-    ParticleCharge = cms.untracked.int32(0),
-    MinP = cms.untracked.vdouble(0.,0.),
-    ParticleID1 = cms.untracked.vint32(443),
-    ParticleID2 = cms.untracked.vint32(22),
+
+oniafilter = cms.EDFilter("PythiaFilter",
+    Status = cms.untracked.int32(2),
+    MaxEta = cms.untracked.double(10.0),
+    MinEta = cms.untracked.double(-10.0),
+    MinPt = cms.untracked.double(5.7),
+    ParticleID = cms.untracked.int32(443),
     BetaBoost = cms.untracked.double(0.434)
 )
 
