@@ -1,8 +1,8 @@
 mkdir ChicMC
 cd ChicMC
 export SCRAM_ARCH=slc7_amd64_gcc530
-cmsrel CMSSW_8_0_30   
-cd CMSSW_8_0_30/src
+cmsrel CMSSW_8_0_36   
+cd CMSSW_8_0_36/src
 cmsenv
 
 git cms-addpkg Configuration/Generator/
